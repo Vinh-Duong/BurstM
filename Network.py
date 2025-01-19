@@ -30,9 +30,11 @@ class BurstM(pl.LightningModule):
         
         burst = burst[0]
         burst_ref = burst[0].unsqueeze(0).clone()
-        burst_src = burst[-1].unsqueeze(0).clone()
+        # burst_src = burst[-1].unsqueeze(0).clone()
+        burst_src = torch.mean(burst[1:],dim=0).unsqueeze(0).clone()
 
-        print(f'size of burst_src', burst_src.shape)
+        # print(f'size of burst_ref', burst_ref.shape)
+        # print(f'size of burst_src', burst_src.shape)
         
         # burst_feat, ref, EstLrImg = self.burstm_model(burst_ref, burst_src, scale, target_size)
         burst_feat = self.burstm_model(burst_ref, burst_src)
@@ -53,8 +55,8 @@ class BurstM(pl.LightningModule):
         pred = self.forward(x, downsample_factor.item(), target_size)
         pred = pred.clamp(0.0, 1.0)
 
-        print(f'size of pred', pred.shape)
-        print(f'size of y', y.shape)
+        # print(f'size of pred', pred.shape)
+        # print(f'size of y', y.shape)
         
         PSNR = self.valid_psnr(pred, y)
         

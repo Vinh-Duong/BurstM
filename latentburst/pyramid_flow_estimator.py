@@ -69,6 +69,13 @@ class FlowEstimator(nn.Module):
         Returns:
           A tensor with optical flow from A to B
         """
+        if features_a.shape[0] > 1:
+            b, c, h, w = features_a.shape
+            features_a = features_a.view(1, b*c, h, w)
+        if features_b.shape[0] > 1:
+            b, c, h, w = features_b.shape
+            features_b = features_b.view(-1, b*c, h, w)
+
         net = torch.cat([features_a, features_b], dim=1)
         for conv in self._convs:
             net = conv(net)

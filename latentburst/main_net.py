@@ -90,9 +90,9 @@ class LatentBurst(nn.Module):
             fusion_pyramid_levels=5,
             specialized_levels=3,
             sub_levels=4,
-            filters=32,
+            filters=64,
             flow_convs=(3, 3, 3, 3),
-            flow_filters=(16, 32, 64, 128),
+            flow_filters=(32, 64, 128, 256),
     ):
         super().__init__()
         self.pyramid_levels = pyramid_levels

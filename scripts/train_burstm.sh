@@ -13,4 +13,4 @@ CUDA_VISIBLE_DEVICES=0, python BurstM_Track_1_training.py \
                     --model_dir ./../logs/latentburst/checkpoints \
                     --result_dir ./../logs/latentburst/results \
                     --scale=4  \
-                    # --weights ./../logs/burstM/checkpoints/epoch=00-val_psnr=30.61.ckpt
+                    # --weights ./../logs/burstM/checkpoints/epoch=04-val_psnr=34.44.ckpt

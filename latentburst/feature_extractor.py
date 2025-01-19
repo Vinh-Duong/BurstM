@@ -123,7 +123,7 @@ class FeatureExtractor(nn.Module):
         super().__init__()
         self.extract_sublevels = SubTreeExtractor(in_channels, channels, sub_levels)
         self.sub_levels = sub_levels
-
+            
     def forward(self, image_pyramid: List[torch.Tensor]) -> List[torch.Tensor]:
         """Extracts a cascaded feature pyramid.
 
@@ -153,4 +153,5 @@ class FeatureExtractor(nn.Module):
                 if j <= i:
                     features = torch.cat([features, sub_pyramids[i - j][j]], dim=1)
             feature_pyramid.append(features)
+        
         return feature_pyramid
