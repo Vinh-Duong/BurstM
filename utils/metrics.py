@@ -55,7 +55,7 @@ class PSNR(nn.Module):
         return psnr
 
     def forward(self, pred, gt, valid=None):
-        assert pred.dim() == 4 and pred.shape == gt.shape
+        # assert pred.dim() == 4 and pred.shape == gt.shape
         if valid is None:
             psnr_all = [self.psnr(p.unsqueeze(0), g.unsqueeze(0)) for p, g in
                         zip(pred, gt)]

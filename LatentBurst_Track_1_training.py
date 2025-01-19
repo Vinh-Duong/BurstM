@@ -21,7 +21,7 @@ seed_everything(13)
 ######################################## Model and Dataset ########################################################
 
 from Network import BurstM
-# from latentburst.main_net import LatentBurst
+from latentburst.main_net import LatentBurst
 from datasets.zurich_raw2rgb_dataset import ZurichRAW2RGB
 from datasets.synthetic_burst_train_set import SyntheticBurst
 from torch.utils.data.dataloader import DataLoader
@@ -45,8 +45,6 @@ parser.add_argument('--input_dir', default="./Zurich-RAW-to-DSLR-Dataset", type=
 parser.add_argument('--model_dir', default="./Results/SyntheticBurst/saved_model", type=str, help='Directory of model')
 parser.add_argument('--result_dir', default="./Results/SyntheticBurst/result", type=str, help='Directory of results')
 parser.add_argument('--burst_size', default="14", type=int, help='Number of Burst short')
-parser.add_argument('--weights', default=None, type=str, help='Path to weights')
-parser.add_argument('--scale', default='4', type=str, help='Sacle of SR')
 args = parser.parse_args()
 
 ######################################### Data loader ######################################################
@@ -54,11 +52,11 @@ args = parser.parse_args()
 def load_data(image_dir, burst_size):
 
     train_zurich_raw2rgb = ZurichRAW2RGB(root=image_dir,  split='train')
-    train_dataset = SyntheticBurst(train_zurich_raw2rgb, burst_size=burst_size, crop_sz=384, phase='train', scale_factor = float(args.scale))
+    train_dataset = SyntheticBurst(train_zurich_raw2rgb, burst_size=burst_size, crop_sz=384, phase='train')
     train_loader = DataLoader(train_dataset, batch_size=1, shuffle=True, drop_last=True, num_workers=6, pin_memory=True)
 
     test_zurich_raw2rgb = ZurichRAW2RGB(root=image_dir,  split='test')
-    test_dataset = SyntheticBurst(test_zurich_raw2rgb, burst_size=burst_size, crop_sz=384, phase='test', scale_factor=float(args.scale))
+    test_dataset = SyntheticBurst(test_zurich_raw2rgb, burst_size=burst_size, crop_sz=384, phase='test', scale_factor=4)
     test_loader = DataLoader(test_dataset, batch_size=1, num_workers=6, pin_memory=True)
 
     return train_loader, test_loader
@@ -66,10 +64,7 @@ def load_data(image_dir, burst_size):
 ######################################### Load BurstM ####################################################
 if __name__ == '__main__':
     torch_seed(13)
-    model = BurstM()
-    if args.weights is not None:
-        model = model.load_from_checkpoint(args.weights, strict=False)
-    # model = LatentBurst()
+    model = LatentBurst()
     model.cuda()
 
     if not os.path.exists(args.model_dir):
