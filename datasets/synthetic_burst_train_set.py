@@ -66,7 +66,7 @@ class SyntheticBurst(torch.utils.data.Dataset):
             meta_info: A dictionary containing the parameters used to generate the synthetic burst.
         """
         if self.phase =='train':
-            self.downsample_factor = random.randint(2,4)
+            self.downsample_factor = self.downsample_factor #random.randint(2,4)
         elif self.phase == 'test':
             self.downsample_factor = self.downsample_factor
         elif self.phase == 'eval':

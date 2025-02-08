@@ -11,7 +11,7 @@ import models
 
 seed_everything(13)
 post_process = SimplePostProcess(return_np=True)
-
+from latentburst.main_net import LatentBurst
 
 class BurstM(pl.LightningModule):
     def __init__(self):
@@ -21,32 +21,43 @@ class BurstM(pl.LightningModule):
         self.train_loss2 = nn.MSELoss()
         self.valid_psnr = PSNR(boundary_ignore=40)
 
-        self.burstm_model = models.BurstM.Neural_Warping().cuda()
+        # self.burstm_model = models.BurstM.Neural_Warping().cuda()
+        self.burstm_model = LatentBurst().cuda()
+
         
     
     def forward(self, burst, scale=4, target_size=(192,192)):
         
         burst = burst[0]
         burst_ref = burst[0].unsqueeze(0).clone()
-        burst_src = burst[1:]
+        # burst_src = burst[-1].unsqueeze(0).clone()
+        burst_src = torch.mean(burst[1:],dim=0).unsqueeze(0).clone()
+
+        # print(f'size of burst_ref', burst_ref.shape)
+        # print(f'size of burst_src', burst_src.shape)
         
-        burst_feat, ref, EstLrImg = self.burstm_model(burst_ref, burst_src, scale, target_size)
+        # burst_feat, ref, EstLrImg = self.burstm_model(burst_ref, burst_src, scale, target_size)
+        burst_feat = self.burstm_model(burst_ref, burst_src)
         
-        return burst_feat, ref, EstLrImg
+        return burst_feat#, ref, EstLrImg
     
     def training_step(self, train_batch, batch_idx):
         x, y, flow_vectors, meta_info, downsample_factor, target_size = train_batch
-        pred, ref, EstLrImg = self.forward(x, downsample_factor.item(), target_size)
+        pred = self.forward(x, downsample_factor.item(), target_size)
         pred = pred.clamp(0.0, 1.0)
-        loss = self.train_loss(pred, y) + self.train_loss2(EstLrImg, ref)
+        loss = self.train_loss(pred, y) #+ self.train_loss2(EstLrImg, ref)
         self.log('train_loss', loss, on_step=True, on_epoch=True)
         
         return loss
 
     def validation_step(self, val_batch, batch_idx):
         x, y, flow_vectors, meta_info, downsample_factor, target_size = val_batch
-        pred, ref, EstLrImg = self.forward(x, downsample_factor.item(), target_size)
+        pred = self.forward(x, downsample_factor.item(), target_size)
         pred = pred.clamp(0.0, 1.0)
+
+        # print(f'size of pred', pred.shape)
+        # print(f'size of y', y.shape)
+        
         PSNR = self.valid_psnr(pred, y)
         
         return PSNR
