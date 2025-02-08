@@ -56,7 +56,7 @@ out_dir_gt = args.result_gt_dir
 os.makedirs(out_dir, exist_ok=True)
 os.makedirs(out_dir_gt, exist_ok=True)
 
-dummy_input = torch.rand(1,14,4,48,48, device = 'cuda')
+dummy_input = torch.rand(1,14,4,256,256, device = 'cuda')
 for _ in range(10):
     _ = model(dummy_input)
 
@@ -81,7 +81,7 @@ for i, data in tqdm(enumerate(test_loader)):
     
     with torch.no_grad():
         tic = time.time()
-        output, ref, EstLrImg = model(x, downsample_factor.item(), target_size)
+        output= model(x, downsample_factor.item(), target_size)
         output = output.clamp(0.0, 1.0)
         toc = time.time()
         tt.append(toc-tic)
