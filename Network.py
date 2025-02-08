@@ -32,6 +32,7 @@ class BurstM(pl.LightningModule):
         burst_ref = burst[0].unsqueeze(0).clone()
         # burst_src = burst[-1].unsqueeze(0).clone()
         burst_src = torch.mean(burst[1:],dim=0).unsqueeze(0).clone()
+        # burst_src = burst[1:]
 
         # print(f'size of burst_ref', burst_ref.shape)
         # print(f'size of burst_src', burst_src.shape)

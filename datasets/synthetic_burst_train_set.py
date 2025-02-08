@@ -22,11 +22,11 @@ class SyntheticBurst(torch.utils.data.Dataset):
         self.transform = transform
         self.phase = phase
         self.downsample_factor = scale_factor
-        self.burst_transformation_params = {'max_translation': 24.0,
+        self.burst_transformation_params = {'max_translation': 8.0,
                                             'max_rotation': 1.0,
                                             'max_shear': 0.0,
                                             'max_scale': 0.0,
-                                            'border_crop': 24}
+                                            'border_crop': 8}
 
         self.image_processing_params = {'random_ccm': True, 'random_gains': True, 'smoothstep': True,
                                         'gamma': True,

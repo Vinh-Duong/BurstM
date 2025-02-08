@@ -9,8 +9,8 @@
 
 CUDA_VISIBLE_DEVICES=0, python BurstM_Track_1_training.py \
                     --input_dir D:/Vinh/3.Project_working/camera_isp/Datasets/Zurich-RAW-to-DSLR-Dataset \
-                    --log_dir ./../logs/latentburst \
-                    --model_dir ./../logs/latentburst/checkpoints \
-                    --result_dir ./../logs/latentburst/results \
-                    --scale=4  \
-                    # --weights ./../logs/burstM/checkpoints/epoch=04-val_psnr=34.44.ckpt
+                    --log_dir ./../logs/latentburst_x2 \
+                    --model_dir ./../logs/latentburst_x2/checkpoints \
+                    --result_dir ./../logs/latentburst_x2/results \
+                    --scale=2  \
+                    --weights ./../logs/latentburst_x2/checkpoints/last.ckpt

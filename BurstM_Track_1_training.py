@@ -54,11 +54,11 @@ args = parser.parse_args()
 def load_data(image_dir, burst_size):
 
     train_zurich_raw2rgb = ZurichRAW2RGB(root=image_dir,  split='train')
-    train_dataset = SyntheticBurst(train_zurich_raw2rgb, burst_size=burst_size, crop_sz=384, phase='train', scale_factor = float(args.scale))
+    train_dataset = SyntheticBurst(train_zurich_raw2rgb, burst_size=burst_size, crop_sz=416, phase='train', scale_factor = float(args.scale))
     train_loader = DataLoader(train_dataset, batch_size=1, shuffle=True, drop_last=True, num_workers=6, pin_memory=True)
 
     test_zurich_raw2rgb = ZurichRAW2RGB(root=image_dir,  split='test')
-    test_dataset = SyntheticBurst(test_zurich_raw2rgb, burst_size=burst_size, crop_sz=384, phase='test', scale_factor=float(args.scale))
+    test_dataset = SyntheticBurst(test_zurich_raw2rgb, burst_size=burst_size, crop_sz=416, phase='test', scale_factor=float(args.scale))
     test_loader = DataLoader(test_dataset, batch_size=1, num_workers=6, pin_memory=True)
 
     return train_loader, test_loader

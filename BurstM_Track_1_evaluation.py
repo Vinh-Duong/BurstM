@@ -56,9 +56,9 @@ out_dir_gt = args.result_gt_dir
 os.makedirs(out_dir, exist_ok=True)
 os.makedirs(out_dir_gt, exist_ok=True)
 
-dummy_input = torch.rand(1,14,4,256,256, device = 'cuda')
-for _ in range(10):
-    _ = model(dummy_input)
+# dummy_input = torch.rand(1,14,4,256,256, device = 'cuda')
+# for _ in range(10):
+#     _ = model(dummy_input)
 
 tt = []
 psnrs = []

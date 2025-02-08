@@ -63,8 +63,8 @@ class Fusion(nn.Module):
         self.up2 = nn.Sequential(nn.Conv2d(filters, filters*4, kernel_size=1, stride=1, padding=0, bias=False),
                                   nn.PixelShuffle(2), nn.GELU())
         
-        self.up3 = nn.Sequential(nn.Conv2d(filters, filters*4, kernel_size=1, stride=1, padding=0, bias=False),
-                                  nn.PixelShuffle(2), nn.GELU())
+        # self.up3 = nn.Sequential(nn.Conv2d(filters, filters*4, kernel_size=1, stride=1, padding=0, bias=False),
+        #                           nn.PixelShuffle(2), nn.GELU())
 
         # Each item 'convs[i]' will contain the list of convolutions to be applied
         # for pyramid level 'i'.
@@ -141,7 +141,8 @@ class Fusion(nn.Module):
             net = layers[2](net)
         
         # print(f'out shape 1',net.shape)
-        net = self.up3(self.up2(self.up1(net)))
+        # net = self.up3(self.up2(self.up1(net)))
+        net = self.up2(self.up1(net))
         net = self.output_conv(net)
         # print(f'out',net.shape)
         return net
